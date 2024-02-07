@@ -9,8 +9,13 @@ export default class productModel{
     static getAll(){
         return products;
     }
+    static add(product){
+        product.id = products.length+1;
+        products.push(product);
+        return product;
+    }
 }
 
 var products = [
-    new productModel(1, 'Mobile', 'Iphone','http://iphone.com','16x17')
+    new productModel(1, 'T-shirt', 'Printed shirt','http://iphone.com',['l','xl','m'])
 ]
