@@ -3,9 +3,9 @@ import productController from "./product.controller.js";
 
 const ProductController = new productController;
 //configure the products routes
-const Route = express.Router();
+const productRouters = express.Router();
 
-Route.get('/',ProductController.getAllProducts);
-Route.post('/',ProductController.addProducts);
+productRouters.get('/',ProductController.getAllProducts);
+productRouters.post('/',ProductController.addProducts);
 
-export default Route;
+export default productRouters;
