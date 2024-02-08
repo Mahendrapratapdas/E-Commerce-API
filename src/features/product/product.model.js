@@ -14,8 +14,15 @@ export default class productModel{
         products.push(product);
         return product;
     }
+    static get(id){
+        const product = products.find(i=>{
+            return i.id==id;
+        });
+        return product;
+    }
 }
 
 var products = [
-    new productModel(1, 'T-shirt', 'Printed shirt','http://iphone.com',['l','xl','m'])
-]
+    new productModel(1, 'T-shirt', 'Printed shirt','http://iphone.com',['l','xl','m']),
+    new productModel(2, 'Shirt', 'Dot-shirt','http://shirt.com',['l','xl','m'])
+];
