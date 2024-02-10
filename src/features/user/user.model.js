@@ -16,9 +16,12 @@ export default class userModel{
         const user = users.find(u => u.email == email && u.password == password);
         return user;
     }
+    static getAllUser(){
+        return users;
+    }
 }
 
-var users = [
+let users = [
     {
         name:'Mahendra',
         email:'mahi@gmail.com',
