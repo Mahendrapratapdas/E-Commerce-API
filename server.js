@@ -1,10 +1,13 @@
 //import exprees using ES6 syntax
 import express from "express";
 import productRouters from './src/features/product/product.routes.js'
+import UserRouters from "./src/features/user/user.routes.js";
 //crete a express server
 const app = express();
 
+app.use(express.json());
 app.use("/api/product", productRouters);
+app.use("/api/user", UserRouters)
 //set default route
 app.get('/', (req, res)=>{
     res.send("Welcome to the Ecommerce APIs");
