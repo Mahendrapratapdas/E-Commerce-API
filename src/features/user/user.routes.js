@@ -5,8 +5,8 @@ const UserController = new userController;
 //configure the user routes
 const UserRouters = express.Router();
 
-UserRouters.get('/signUp',UserController.signUp);
-UserRouters.get('/signIn',UserController.signIn);
+UserRouters.post('/signUp',UserController.signUp);
+UserRouters.post('/signIn',UserController.signIn);
 
 
 
