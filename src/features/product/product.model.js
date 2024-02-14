@@ -34,14 +34,11 @@ export default class productModel{
         return product;
     };
     static ratings(userID, productID, rating){
-        console.log(userID)
         const user = userModel.getAllUser().find(u => u.id == userID);
-        console.log(user)
         if(!user){
             return "Invalid User"
         }
         const product = products.find(p=> p.id == productID)
-        console.log(product)
         if(!product){
             return "Product does't Exits";
         }

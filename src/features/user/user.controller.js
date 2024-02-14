@@ -21,7 +21,7 @@ export default class userController{
             res.status(400).send("User not found");
         }
         else{
-            const token = jwt.sign({UserId:result.id},"AaPJbqiBjLIVtXmiOO14Jl3wjLylzfGy",{expiresIn:'1hr'});
+            const token = jwt.sign({userId:result.id},"AaPJbqiBjLIVtXmiOO14Jl3wjLylzfGy",{expiresIn:'1hr'});
             console.log(token);
             res.status(200)
             .cookie("jwtToken",token,{maxAge:900000,httpOnly:false})
