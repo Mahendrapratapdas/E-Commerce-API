@@ -1,3 +1,4 @@
+import userModel from "../user/user.model.js";
 export default class productModel{
     constructor(id,name,desc,imageUrl,size,price,catagory){
         this.id = id;
@@ -32,7 +33,31 @@ export default class productModel{
         });
         return product;
     };
-}
+    static ratings(userID, productID, rating){
+        console.log(userID)
+        const user = userModel.getAllUser().find(u => u.id == userID);
+        console.log(user)
+        if(!user){
+            return "Invalid User"
+        }
+        const product = products.find(p=> p.id == productID)
+        console.log(product)
+        if(!product){
+            return "Product does't Exits";
+        }
+        if(!product.ratings){
+            product.ratings = [];
+            product.ratings.push({userID:userID,rating:rating})
+        }else{
+            const ExitingRatings = product.ratings.findIndex( u=> u.userID == userID);
+            if(ExitingRatings >= 0){
+                product.ratings[ExitingRatings] = {userID:userID,rating:rating};
+            }else{
+                product.ratings.push({userID:userID,rating:rating});
+            };
+        };
+    };
+};
 
 var products = [
     new productModel(1, 'T-shirt', 'Printed shirt','http://iphone.com',['l','xl','m'],118,"Mens'Ware"),
