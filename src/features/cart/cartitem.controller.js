@@ -6,7 +6,6 @@ export default class cartController{
     add(req,res){
         const {productID,quantity} = req.query;
         const userID = req.userID;
-        console.log(userID);
         const product = productModel.getAll().findIndex(p=> p.id == productID)
         const user = userModel.getAllUser().findIndex(u=> u.id == userID);
         if(product >=0 ){
@@ -18,6 +17,20 @@ export default class cartController{
             }
         }else{
             return res.status(400).send("User Not Found");
+        }
+    }
+    get(req,res){
+        const userID = req.userID;
+        const user = userModel.getAllUser().findIndex(u=> u.id == userID);
+        if(user >= 0){
+            const result = cartModel.getItem(userID);
+            if(!result){
+                res.status(200).send("No cart Item");
+            }else{
+                res.status(200).send(result)
+            }
+        }else{
+            res.status(400).send("User Not Found");
         }
     }
 }
