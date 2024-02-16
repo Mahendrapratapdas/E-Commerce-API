@@ -16,7 +16,7 @@ export default class cartController{
                 return res.status(400).send("User Not Found");
             }
         }else{
-            return res.status(400).send("User Not Found");
+            return res.status(400).send("Product Not Found");
         }
     }
     get(req,res){
@@ -31,6 +31,22 @@ export default class cartController{
             }
         }else{
             res.status(400).send("User Not Found");
+        }
+    }
+    delete(req, res){
+        const userID = req.userID;
+        const cartItemID = req.params.id
+        const item = cartModel.getItem(userID).findIndex(i=> i.id == cartItemID)
+        if(item >= 0){
+            const err = cartModel.delete(cartItemID,userID);
+            const item = cartModel.getItem(userID).find(i=> i.id == cartItemID)
+            if(err){
+                return res.status(400).send(err)
+            }else{
+                return res.status(200).send(item);
+            }
+        }else{
+            return res.status(400).send("User does't have this item in the cart");
         }
     }
 }

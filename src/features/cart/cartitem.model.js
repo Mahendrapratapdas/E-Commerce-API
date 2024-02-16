@@ -22,6 +22,15 @@ export default class cartModel{
         const items = cartItems.filter(i=> i.userID == userID);
         return items;
     }
+    static delete(cartId, userID){
+        const item = cartItems.findIndex(i=> i.id == cartId && i.userID == userID);
+        if(item < 0){
+            return 'Item not Found'
+        }else{
+            cartItems.splice(item,1)
+            return cartItems
+        }
+    }
 };
 var cartItems = [
     new cartModel(1,1,1,1)
