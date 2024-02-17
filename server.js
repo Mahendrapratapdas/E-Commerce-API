@@ -16,6 +16,10 @@ app.use("/api/cart",jwtAuth,cartRoutes)
 app.get('/', (req, res)=>{
     res.send("Welcome to the Ecommerce APIs");
 })
+//Handeling the bed request.
+app.use((req,res)=>{
+    res.status(400).send("Api Url not found");
+})
 
 //server listen
 app.listen(3002,()=>{
