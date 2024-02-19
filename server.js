@@ -6,6 +6,7 @@ import UserRouters from "./src/features/user/user.routes.js";
 import {cartRoutes} from "./src/features/cart/cartitem.routes.js";
 import basicAuth from "./src/middle-ware/basicAuth.middleware.js";
 import jwtAuth from "./src/middle-ware/jwtAuth.middleware.js";
+import {errorMiddleware} from "./src/middle-ware/error.middleware.js"
 //crete a express server
 const app = express();
 
@@ -28,6 +29,8 @@ app.use((req,res)=>{
     res.status(400).send("Api Url not found");
 })
 
+//Handel the error class.
+app.use(errorMiddleware);
 //server listen
 app.listen(3002,()=>{
     console.log("Server listen at 3002");

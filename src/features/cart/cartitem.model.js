@@ -25,7 +25,7 @@ export default class cartModel{
     static delete(cartId, userID){
         const item = cartItems.findIndex(i=> i.id == cartId && i.userID == userID);
         if(item < 0){
-            return 'Item not Found'
+            throw new appError('Item not Found');
         }else{
             cartItems.splice(item,1)
             return cartItems

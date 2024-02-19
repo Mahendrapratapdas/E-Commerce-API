@@ -9,7 +9,6 @@ const jwtAuth = (req, res, next)=>{
     }catch(err){
         return res.status(401).send("Un Authorized access")
     }
-    next();
-   
+
 }
 export default jwtAuth;
