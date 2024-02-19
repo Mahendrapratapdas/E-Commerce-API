@@ -1,7 +1,6 @@
 import nodemailer from 'nodemailer';
 
 async function sendMail(stackTrace){
-    console.log("inside the send mail func")
     const transporter = nodemailer.createTransport({
         service:'gmail',
         auth:{
