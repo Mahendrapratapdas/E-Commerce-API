@@ -7,7 +7,7 @@ import {cartRoutes} from "./src/features/cart/cartitem.routes.js";
 import basicAuth from "./src/middle-ware/basicAuth.middleware.js";
 import jwtAuth from "./src/middle-ware/jwtAuth.middleware.js";
 import {errorMiddleware} from "./src/middle-ware/error.middleware.js"
-import connectToMongoDB from "./src/config/mongoDB.js";
+import {connectToMongoDB} from "./src/config/mongoDB.js";
 //crete a express server
 const app = express();
 
