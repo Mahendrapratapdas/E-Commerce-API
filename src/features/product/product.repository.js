@@ -40,4 +40,36 @@ export default class ProductRepository{
             throw new appError(500,"Somethings want with Database........");
         }
     }
+    async filter(minPrice,maxPrice,catagory){
+        try{
+            const db = getDB();
+            const collection = db.collection(this.collection);
+            let Expression = {};
+            if(minPrice){
+                Expression.price = {$gte:parseFloat(minPrice)}
+            }
+            if(maxPrice){
+                Expression.price = {...Expression.price, $lte:parseFloat(maxPrice)}
+            }
+            if(catagory){
+                Expression.price = {...Expression.price, $e:catagory}
+            }
+            const products = await collection.find(Expression).toArray();
+            return products
+        }catch(err){
+            console.log(err);
+            throw new appError(500,"Somethings want with Database........");
+        }
+    };
+    async ratings(userID, productID, rating){
+        try{
+            const db = getDB();
+            const collection = db.collection(this.collection);
+            const result = await collection.updateOne({_id:new ObjectId(productID)},{$push:{ratings:{userID:new ObjectId(userID),rating:rating}}});
+            return result;
+        }catch(err){
+            console.log(err);
+            throw new appError(500,"Somethings want with Database........");
+        }
+    };
 }

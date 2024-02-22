@@ -41,24 +41,33 @@ export default class productController{
         }catch(err){
             console.log(err);
             throw new appError(500,"Somethings want wrong........");
-        }
-        
+        }  
     }
-    rateProducts(req,res){
-        const {userID, productID, rating} = req.query
-        const err = productModel.ratings(userID, productID, rating)
-        if(err){
-            res.status(400).send(err)
-        }else{
-            res.status(201).send("Rating add successfully");
-        }
+    async filterProduct(req,res){
+        try{
+            const minPrice = req.query.minPrice;
+            const maxPrice = req.query.maxPrice;
+            const catagory = req.query.catagory;
+            const result = await this.productRepository.filter(minPrice,maxPrice,catagory);
+            res.status(200).send(result);
+        }catch(err){
+            console.log(err);
+            throw new appError(500,"Somethings want wrong........");
+        }    
     }
-    
-    filterProduct(req,res){
-        const minPrice = req.query.minPrice;
-        const maxPrice = req.query.maxPrice;
-        const catagory = req.query.catagory;
-        const result = productModel.filter(minPrice,maxPrice,catagory);
-        res.status(200).send(result);
-    }
+    async rateProducts(req,res){
+        try{
+            const {productID, rating} = req.query
+            const userID = req.userID;
+            const result = await this.productRepository.ratings(userID, productID, rating)
+            if(result.acknowledged){
+                res.status(200).send("Your rating is add");
+            }else{
+                res.status(400).send("Your rate is not added");
+            }
+        }catch(err){
+            console.log(err);
+            throw new appError(500,"Somethings want wrong........");
+        }  
+    };  
 }

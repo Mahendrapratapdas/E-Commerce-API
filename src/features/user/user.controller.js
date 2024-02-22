@@ -33,7 +33,7 @@ export default class userController{
         const hashedPassword = await bcrypt.compare(password, user.password);
     
         if(hashedPassword){
-            const token = jwt.sign({userId:user.id},"AaPJbqiBjLIVtXmiOO14Jl3wjLylzfGy",{expiresIn:'1hr'});
+            const token = jwt.sign({userID:user._id},"AaPJbqiBjLIVtXmiOO14Jl3wjLylzfGy",{expiresIn:'1hr'});
             res.status(200)
             .cookie("jwtToken",token,{maxAge:900000,httpOnly:false})
             .send(token);
