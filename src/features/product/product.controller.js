@@ -1,14 +1,48 @@
+import appError from "../../middle-ware/error.middleware.js";
 import productModel from "./product.model.js";
+import ProductRepository from "./product.repository.js";
+
 export default class productController{
-    getAllProducts(req,res){
-        const product = productModel.getAll();
-        res.status(200).send(product);
+    constructor(){
+        this.productRepository = new ProductRepository();
     }
-    addProducts(req,res){
-        const {name , desc , size} = req.body;
-        const newProduct ={name, desc, imageUrl:req.file.filename, size:size.split(',')}
-        const createdProduct = productModel.add(newProduct);
-        res.status(201).send(createdProduct);
+
+    async addProducts(req,res){
+        try{
+            const {name , desc , size, price, catagory} = req.body;
+            const newProduct = new productModel(name, desc, req.file.filename, size.split(','),parseFloat(price), catagory)
+            const createdProduct = await this.productRepository.add(newProduct);
+            res.status(201).send(createdProduct);
+        }catch(err){
+            console.log(err);
+            throw new appError(500,"Somethings want wrong........");
+        }
+        
+    }
+    async getAllProducts(req,res){
+        try{
+            const products = await this.productRepository.getAll();
+            res.status(200).send(products);
+        }catch(err){
+            console.log(err);
+            throw new appError(500,"Somethings want wrong........");
+        }
+    }
+    async getOneProducts(req,res){
+        try{
+            const id = req.params.id;
+            const product = await this.productRepository.get(id); 
+            if(!product){
+                res.status(404).send('Product not found');
+            }
+            else{
+                res.status(200).send(product);
+            }
+        }catch(err){
+            console.log(err);
+            throw new appError(500,"Somethings want wrong........");
+        }
+        
     }
     rateProducts(req,res){
         const {userID, productID, rating} = req.query
@@ -19,16 +53,7 @@ export default class productController{
             res.status(201).send("Rating add successfully");
         }
     }
-    getOneProducts(req,res){
-        const id = req.params.id;
-        const product = productModel.get(id); 
-        if(!product){
-            res.status(404).send('Product not found');
-        }
-        else{
-            res.status(200).send(product);
-        }
-    }
+    
     filterProduct(req,res){
         const minPrice = req.query.minPrice;
         const maxPrice = req.query.maxPrice;
