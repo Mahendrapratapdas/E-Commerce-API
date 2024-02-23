@@ -65,8 +65,19 @@ export default class ProductRepository{
         try{
             const db = getDB();
             const collection = db.collection(this.collection);
-            const result = await collection.updateOne({_id:new ObjectId(productID)},{$push:{ratings:{userID:new ObjectId(userID),rating:rating}}});
-            return result;
+            //1. If any Rating is there then remove it
+            await collection.updateOne({
+                _id:new ObjectId(productID)
+                },{
+                    $pull:{ratings:{userID:new ObjectId(userID)}}
+            });
+
+            return await collection.updateOne({
+                _id:new ObjectId(productID)
+                },
+                {$push:{ratings:{userID:new ObjectId(userID),rating:rating}}
+            });
+            
         }catch(err){
             console.log(err);
             throw new appError(500,"Somethings want with Database........");

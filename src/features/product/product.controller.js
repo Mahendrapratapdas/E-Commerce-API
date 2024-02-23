@@ -57,7 +57,7 @@ export default class productController{
     }
     async rateProducts(req,res){
         try{
-            const {productID, rating} = req.query
+            const {productID, rating} = req.body;
             const userID = req.userID;
             const result = await this.productRepository.ratings(userID, productID, rating)
             if(result.acknowledged){
