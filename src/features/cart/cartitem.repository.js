@@ -8,7 +8,7 @@ export default class CartItemsRepository{
         try{
             const db = getDB();
             const collection = db.collection(this.collection);
-            await collection.insertOne(newCartItem);
+            await collection.updateOne({productID:newCartItem.productID,userID:newCartItem.userID},{$inc:{quantity:newCartItem.quantity}},{upsert:true});
         }catch(err){
             console.log(err);
             throw new appError(500,"Somethings want with Database........");
