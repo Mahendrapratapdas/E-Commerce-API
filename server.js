@@ -8,6 +8,7 @@ import basicAuth from "./src/middle-ware/basicAuth.middleware.js";
 import jwtAuth from "./src/middle-ware/jwtAuth.middleware.js";
 import {errorMiddleware} from "./src/middle-ware/error.middleware.js"
 import {connectToMongoDB} from "./src/config/mongoDB.js";
+import { orderRoutes } from "./src/features/order/order.routes.js";
 //crete a express server
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use("/api/product",jwtAuth, productRouters);
 app.use("/api/user", UserRouters)
 app.use("/api/cart",jwtAuth,cartRoutes)
+app.use("/api/order",jwtAuth,orderRoutes)
 //set default route
 app.get('/', (req, res)=>{
     res.send("Welcome to the Ecommerce APIs");
