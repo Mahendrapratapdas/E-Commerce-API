@@ -1,3 +1,6 @@
+import { ObjectId } from "mongodb";
+import { getDB } from "../../config/mongoDB.js";
+
 export default class OrderRepository{
     constructor(){
         this.collection = "order";
@@ -10,5 +13,32 @@ export default class OrderRepository{
         // 3.Reduce the product stock
 
         // 4.Clear the CartItems
+    }
+    async getTotalAmont(userID){
+        const db = getDB();
+        const items = db.collection("cartItems").aggregate([
+            {
+                $match:{userID:new ObjectId(userID)}
+            },
+            {
+                $lookup:{
+                    from:"products",
+                    localField:"productID",
+                    foreignField:"_id",
+                    as:"productInfo"
+                }
+            },
+            {
+                $unwind:"$productInfo"
+            },
+            {
+                $addField:{
+                    "totalAmount":{
+                        $multiply:["$productInfo.price","quantity"]
+                    }
+                }
+            }
+        ]).toArray();
+        items.reduce((acc, item) => acc + item.totalAmount, 0);
     }
 }

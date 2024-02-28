@@ -9,6 +9,7 @@ import jwtAuth from "./src/middle-ware/jwtAuth.middleware.js";
 import {errorMiddleware} from "./src/middle-ware/error.middleware.js"
 import {connectToMongoDB} from "./src/config/mongoDB.js";
 import { orderRoutes } from "./src/features/order/order.routes.js";
+import { connectToMongoose } from "./src/config/mongoose.js";
 //crete a express server
 const app = express();
 
@@ -37,6 +38,7 @@ app.use(errorMiddleware);
 //server listen
 app.listen(3002,()=>{
     console.log("Server listen at 3002");
-    connectToMongoDB();
+    //connectToMongoDB();
+    connectToMongoose();
 })
 
