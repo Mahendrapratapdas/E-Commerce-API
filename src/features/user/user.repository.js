@@ -1,24 +1,84 @@
-import { getDB } from "../../config/mongoDB.js";
+import mongoose from "mongoose";
+import { userSchema } from "./user.schema.js";
 import appError from "../../middle-ware/error.middleware.js";
 
-export default class UserRepo{
-    
+
+const userModel = mongoose.model('user', userSchema);
+
+export default class UserRepository{
     async addUser(newUser){
         try{
-            const db = getDB();
-            const collection = db.collection("users");
-            const result = await collection.insertOne(newUser);
-            return result;
+            const user = new userModel(newUser);
+            await user.save()
+            return {
+                status:true,
+                res:user
+            };
         }catch(err){
-            throw new appError(400,"Your data is not stored in database...........");
+            return{
+                status:false,
+                error:{
+                    statusCode:400,
+                    msg:err.message
+                }
+            }
         }
     }
-    
-    async getUserByEmail(email){
-        const db = getDB();
-        const collection = db.collection("users");
-        const user = await collection.findOne({email:email})
-        return user;
+    async getUserByEmail(userEmail){
+        try{
+            const user = await userModel.findOne({email:userEmail});
+            if(user){
+                return{
+                    status:true,
+                    res:user
+                }
+            }else{
+                return{
+                    status:false,
+                    error:{
+                        statusCode:400,
+                        msg:"User Not Found"
+                    }
+                }
+            }
+        }catch(err){
+            return{
+                status:false,
+                error:{
+                    statusCode:400,
+                    msg:err.message
+                }
+            }
+        }
     }
-
+    async resetPassword(userID, hashedPassword){
+        try{
+            const user = await userModel.findById(userID);
+            if(user){
+                user.password = hashedPassword;
+                await user.save();
+                return{
+                    status:true,
+                    res:user
+                }
+            }else{
+                return{
+                    status:false,
+                    error:{
+                        statusCode:400,
+                        msg:"User Not found"
+                    }
+                }
+            }
+        }catch(err){
+            return{
+                status:false,
+                error:{
+                    statusCode:400,
+                    msg:err.message
+                }
+            }
+        }
+        
+    }
 }
